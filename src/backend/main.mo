@@ -17,7 +17,7 @@ import Identify "Identify";
 import Whitelist "Whitelist";
 import Migration "migration";
 
-// (with migration = Migration.migrate)
+(with migration = Migration.migrate)
 shared ({ caller = initializer }) persistent actor class Main() = this {
   let owner = initializer;
   let backend = Principal.fromActor(this);
@@ -112,6 +112,25 @@ shared ({ caller = initializer }) persistent actor class Main() = this {
   ) : async PrepRes {
 
     let res = await* Identify.prepareDelegationPKCEJWT(identify, provider, code, origin, sessionKey, expireIn, targets, transform, transformKeys);
+
+    let #ok(data) = res else return res;
+    if (data.isNew) Stats.inc(stats, "signup", origin);
+    Stats.inc(stats, "signin", origin);
+
+    return res;
+  };
+
+  /// Prepare delegation for usernam/password sing in.
+  public shared ({ caller }) func prepareDelegationPassword(
+    userId : Text,
+    register : Bool,
+    origin : Text,
+    sessionKey : [Nat8],
+    expireIn : Nat,
+    targets : ?[Principal],
+  ) : async PrepRes {
+
+    let res = await* Identify.prepareDelegationPassword(identify, userId, register, caller, origin, sessionKey, expireIn, targets);
 
     let #ok(data) = res else return res;
     if (data.isNew) Stats.inc(stats, "signup", origin);

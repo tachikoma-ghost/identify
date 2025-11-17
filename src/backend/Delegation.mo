@@ -23,7 +23,6 @@ module {
   };
 
   let kind = "authorize-client-success";
-  let authnMethod = "gsi"; // II uses "passkey"
 
   /// Get Delegation bytes without signature.
   ///
@@ -91,7 +90,7 @@ module {
   /// usePublicKey is already DER encoded and used as is.
   /// signature is a cbor encoded signature.
   /// expiration is the time in nanoseconds since 1970 when the delegation should expire
-  public func getDelegationExternalSig(sessionKey : [Nat8], userPublicKey : [Nat8], signature : [Nat8], expiration : Time.Time, targets : ?[Principal]) : AuthResponse {
+  public func getDelegationExternalSig(sessionKey : [Nat8], userPublicKey : [Nat8], signature : [Nat8], expiration : Time.Time, targets : ?[Principal], authnMethod : Text) : AuthResponse {
     let pubkey = sessionKey;
 
     let delegation = {

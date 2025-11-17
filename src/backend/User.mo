@@ -36,6 +36,31 @@ module {
     verified : ?Bool;
   };
 
+  public func id(origin : Text, provider : ProviderKey, id : Text) : User {
+    return {
+      provider;
+      id;
+      origin;
+      createdAt = Time.now();
+
+      email = null;
+      email_verified = null;
+      name = null;
+      username = null;
+      avatar_url = null;
+      bio = null;
+      website = null;
+      location = null;
+      provider_created_at = null;
+      followers_count = null;
+      following_count = null;
+      tweet_count = null;
+      public_repos = null;
+      public_gists = null;
+      verified = null;
+    };
+  };
+
   public func fromJWT(origin : Text, provider : ProviderKey, jwt : JWT) : User {
     let payload = jwt.payload;
     return {

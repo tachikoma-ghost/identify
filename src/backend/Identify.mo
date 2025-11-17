@@ -59,6 +59,7 @@ module {
     signIns : Map<[Nat8], SignInInfo>;
     users : Map<Principal, User>;
     codeHash : Map<[Nat8], CodeHash>; // Code hash for PKCE with JWT flow
+    passwordUsers : Map<Text, Principal>;
   };
 
   /// Initialize a new Identify state.
@@ -73,6 +74,7 @@ module {
       signIns = Map.empty<[Nat8], SignInInfo>();
       users = Map.empty<Principal, User>();
       codeHash = Map.empty<[Nat8], CodeHash>();
+      passwordUsers = Map.empty<Text, Principal>();
     };
   };
 
@@ -449,6 +451,85 @@ module {
 
   };
 
+  /// Complete PKCE sign to get a JWT and prepare delegation.
+  ///
+  /// Warning:
+  /// This function uses non-replicated http-outcalls to complete authentication.
+  /// It therefore requires some trust in the node provider, not to manipulate the requests.
+  /// If possible use `prepareDelegation` instead.
+  public func prepareDelegationPassword(
+    identify : Identify,
+    userId : Text,
+    register : Bool,
+    signInIdentity : Principal,
+    origin : Text,
+    sessionKey : [Nat8],
+    expireIn : Nat,
+    targets : ?[Principal],
+  ) : async* PrepRes {
+    // check preconditions
+    if (expireIn > toNanos(MAX_EXPIRATION_TIME)) return #err("Expiration time to long");
+    if (expireIn < toNanos(MIN_EXPIRATION_TIME)) return #err("Expiration time to short");
+    let now = Time.now();
+    let expireAt = now + expireIn;
+
+    if (sessionKey.size() < 30) return #err("Session key is too short. It is " # Nat.toText(sessionKey.size()) # " bytes.");
+
+    let signInInfo : SignInInfo = {
+      provider = "password";
+      sub = userId;
+      origin;
+      signin = Time.now();
+    };
+
+    // Check if user is registered
+    switch (register, Map.get(identify.passwordUsers, Text.compare, userId)) {
+      case (true, ?principal) {
+        // user already exists
+        if (principal != signInIdentity) return #err("Username is already taken");
+        // else sign in
+      };
+      case (true, null) {
+        // register
+        Map.add(identify.passwordUsers, Text.compare, userId, signInIdentity);
+      };
+      case (false, ?principal) {
+        // sign in
+        if (principal != signInIdentity) return #err("Invalid password");
+      };
+      case (false, null) {
+        return #err("Username does not exist");
+      };
+    };
+
+    let userKeySeed = AuthProvider.getUserKeySeed(signInInfo);
+    let pubKey = CanisterSignature.prepareDelegation(identify.sigStore, userKeySeed, sessionKey, now, MAX_TIME_PER_LOGIN, expireAt, targets);
+    Map.add(identify.signIns, compareKey, sessionKey, signInInfo); // Use user_data_from_pkce.id for sub
+
+    // store user data
+    let principal = CanisterSignature.pubKeyToPrincipal(pubKey);
+
+    let newUser = User.id(origin, "password", userId);
+
+    var isNew = false;
+    let user : User = switch (Map.get(identify.users, Principal.compare, principal)) {
+      case (?old) {
+        User.update(old, origin, "password", newUser); // Changed
+      };
+      case (null) {
+        isNew := true;
+        newUser;
+      };
+    };
+    Map.add(identify.users, Principal.compare, principal, user);
+
+    return #ok({
+      pubKey;
+      expireAt;
+      isNew;
+    });
+  };
+
   /// Get the delegation.
   /// The delegation must be prepared using `prepareDelegation`, `prepareDelegationPKCEJWT` or `prepareDelegationPKCE`.
   /// This function must be called with a query call, to be able to read the certified data from the canister.
@@ -471,9 +552,10 @@ module {
     if (expireAt < Time.now()) return #err("Expired");
     if (origin != signInInfo.origin) return #err("Invalid origin");
     if (provider != signInInfo.provider) return #err("Invalid provider");
+    let authnMethod = provider;
 
     let userKeySeed = AuthProvider.getUserKeySeed(signInInfo);
-    let auth = CanisterSignature.getDelegation(identify.sigStore, userKeySeed, sessionKey, expireAt, targets);
+    let auth = CanisterSignature.getDelegation(identify.sigStore, userKeySeed, sessionKey, expireAt, targets, authnMethod);
 
     Map.add(identify.signIns, compareKey, sessionKey, signInInfo); // Use user_data_from_pkce.id for sub
 

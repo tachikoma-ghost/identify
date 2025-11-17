@@ -82,6 +82,7 @@ module {
         signIns = old.identify.signIns;
         users = old.identify.users;
         codeHash = old.identify.codeHash;
+        passwordUsers = Map.empty<Text, Principal>(); // Added
       };
     };
   };
