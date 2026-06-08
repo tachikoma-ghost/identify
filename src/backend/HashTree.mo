@@ -8,7 +8,7 @@ import Result "mo:core/Result";
 import Nat64 "mo:core/Nat64";
 import Array "mo:core/Array";
 import Runtime "mo:core/Runtime";
-import Hex "mo:hex";
+import Hex "Hex";
 
 // Partial implementation of a hash tree with just the functions to generate canister signatures
 module {
@@ -29,7 +29,7 @@ module {
   };
 
   public func toTextIndent(tree : HashTree, indent : Nat) : Text {
-    let indentStr = "\n" # Text.join("", Array.repeat<Text>(" ", indent).vals());
+    let indentStr = "\n" # Text.join(Array.repeat<Text>(" ", indent).vals(), "");
     let content = switch (tree) {
       case (#Empty) "Empty";
       case (#Fork(a, b)) indentStr # "Fork(" # toTextIndent(a, indent + 1) # ", " # toTextIndent(b, indent + 1) # indentStr # ")";

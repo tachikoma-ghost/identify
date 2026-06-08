@@ -19,7 +19,7 @@ import RSA "RSA";
 import CanisterSignature "CanisterSignature";
 import Delegation "Delegation";
 import User "User";
-import Hex "mo:hex";
+import Hex "Hex";
 import Jwt "JWT";
 import PKCE "PKCE";
 import { JSON } "mo:serde";
@@ -166,7 +166,7 @@ module {
       case (#ok(keys)) {
         let keyIDs = Array.map(keys, func(k : RSA.PubKey) : Text = k.kid);
         Debug.print(
-          Nat.toText(keys.size()) # " keys loaded for " # providerConfig.name # " (" # Text.join(", ", keyIDs.vals()) # ")"
+          Nat.toText(keys.size()) # " keys loaded for " # providerConfig.name # " (" # Text.join(keyIDs.vals(), ", ") # ")"
         );
         return #ok(keys);
       };

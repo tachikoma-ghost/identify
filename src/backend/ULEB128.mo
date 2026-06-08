@@ -33,7 +33,7 @@ module {
     var result : Nat = 0;
     var shift : Nat = 1;
 
-    label forloop for (byte in bytes.vals()) {
+    label forloop for (byte in bytes.values()) {
       let value = byte & 0x7F; // Get the 7 bits
       result += (Nat8.toNat(value) * shift); // Add the bits to result
       shift *= 128; // Move to the next 7-bit slot

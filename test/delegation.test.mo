@@ -1,6 +1,6 @@
 import { print } "mo:core/Debug";
 import Delegation "../src/backend/Delegation";
-import Hex "mo:hex";
+import Hex "../src/backend/Hex";
 
 print("# Delegation");
 

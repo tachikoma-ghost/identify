@@ -178,7 +178,7 @@ module {
   public func serializeKeys(keys : [PubKey]) : Text {
     Array.map(keys, serializeKey)
     |> Array.sort(_, Text.compare)
-    |> Text.join("\n", _.vals());
+    |> Text.join(_.vals(), "\n");
   };
 
   /// Decode to custom key serialization format.

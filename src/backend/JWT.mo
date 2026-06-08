@@ -158,7 +158,7 @@ module {
     if (nonce != null and nonce != payload.nonce) return #err("invalid nonce in payload");
     // check audience
     if (not hasCommonEntry(audiences, payload.aud, Text.equal)) {
-      return #err("audience is not whitelisted: " # Text.join(", ", payload.aud.vals()));
+      return #err("audience is not whitelisted: " # Text.join(payload.aud.vals(), ", "));
     };
 
     // check if token is valid at the current time

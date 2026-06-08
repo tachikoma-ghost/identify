@@ -16,21 +16,21 @@ keywords = [
 license = "MIT"
 
 [dependencies]
-core = "1.0.0"
+core = "2.5.0"
 base = "0.16.0"
-serde = "3.3.2"
-sha2 = "0.1.6"
+serde = "3.5.0"
+sha2 = "0.2.1"
 hash = "1.0.0"
 cbor = "4.1.0"
 hex = "1.0.2"
-xtended-numbers = "2.1.0"
-candid = "2.1.0"
+xtended-numbers = "2.3.0"
+candid = "2.4.2"
 
 [toolchain]
 wasmtime = "37.0.0"
-moc = "0.16.3"
+moc = "1.8.2"
 
 [dev-dependencies]
-bench = "1.0.0"
-test = "2.1.1"
+bench = "2.0.1"
+test = "2.1.2"
 itertools = "0.2.2"

@@ -24,7 +24,7 @@ module {
     var appOriginFound = false;
     var userOriginFound = false;
 
-    for (o in appInfo.origins.vals()) {
+    for (o in appInfo.origins.values()) {
       if (o == appOrigin) {
         appOriginFound := true;
       };

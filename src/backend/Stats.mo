@@ -203,7 +203,7 @@ module {
     let perf1 = Float.fromInt(Nat64.toNat(IC.performanceCounter(1)));
     let perfC1 = Nat64.toText(IC.performanceCounter(1));
     let usage = formatPercent(perf1 / MAX_INSTRUCTIONS); // percentage of maximum instruction per request
-    let cost = Float.format(#fix 5, perf1 * 0.000000000000536) # "$"; // $ per instruction https://link.medium.com/zjNeJd73sNb
+    let cost = Float.format(perf1 * 0.000000000000536, #fix 5) # "$"; // $ per instruction https://link.medium.com/zjNeJd73sNb
     "Useage " # usage # " ~" # cost # " perfC1 " # perfC1 # ".";
   };
 
@@ -211,25 +211,25 @@ module {
     if (val < 1_000) {
       Nat.toText(val) # " " # unit;
     } else if (val < 1_000_000) {
-      Float.format(#fix 3, Float.fromInt(val) / 1_000) # " k" # unit;
+      Float.format(Float.fromInt(val) / 1_000, #fix 3) # " k" # unit;
     } else if (val < 1_000_000_000) {
-      Float.format(#fix 3, Float.fromInt(val) / 1_000_000) # " M" #unit;
+      Float.format(Float.fromInt(val) / 1_000_000, #fix 3) # " M" #unit;
     } else if (val < 1_000_000_000_000) {
-      Float.format(#fix 3, Float.fromInt(val) / 1_000_000_000) # " B" #unit;
+      Float.format(Float.fromInt(val) / 1_000_000_000, #fix 3) # " B" #unit;
     } else {
-      Float.format(#fix 3, Float.fromInt(val) / 1_000_000_000_000) # " T" #unit;
+      Float.format(Float.fromInt(val) / 1_000_000_000_000, #fix 3) # " T" #unit;
     };
   };
 
   public func formatPercent(val : Float) : Text {
     if (val >= 0.05) {
-      Float.format(#fix 1, val * 100) # "%";
+      Float.format(val * 100, #fix 1) # "%";
     } else if (val >= 0.01) {
-      Float.format(#fix 2, val * 100) # "%";
+      Float.format(val * 100, #fix 2) # "%";
     } else if (val >= 0.001) {
-      Float.format(#fix 3, val * 100) # "%";
+      Float.format(val * 100, #fix 3) # "%";
     } else {
-      Float.format(#exp 2, val * 100) # "%";
+      Float.format(val * 100, #exp 2) # "%";
     };
   };
 

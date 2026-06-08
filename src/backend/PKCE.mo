@@ -135,7 +135,7 @@ module PKCE {
       bodyValues.vals(),
       func((key : Text, value : Text)) : Text = URL.urlEncode(key) # "=" # URL.urlEncode(value),
     );
-    let body : Text = Text.join("&", bodyIter);
+    let body : Text = Text.join(bodyIter, "&");
 
     let headers = [
       { name = "Content-Type"; value = "application/x-www-form-urlencoded" },
@@ -171,7 +171,7 @@ module PKCE {
       _.vals(),
       func((key : Text, value : Text)) : Text = URL.urlEncode(key) # "=" # URL.urlEncode(value),
     )
-    |> Text.join("&", _);
+    |> Text.join(_, "&");
 
     let headers = [
       { name = "Content-Type"; value = "application/x-www-form-urlencoded" },

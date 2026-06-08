@@ -2,7 +2,7 @@ import { print } "mo:core/Debug";
 import { trap } "mo:core/Runtime";
 import Blob "mo:core/Blob";
 import HashTree "../src/backend/HashTree";
-import Hex "mo:hex";
+import Hex "../src/backend/Hex";
 type HashTree = HashTree.HashTree;
 
 print("# HashTree");
