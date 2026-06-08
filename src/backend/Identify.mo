@@ -19,7 +19,7 @@ import RSA "RSA";
 import CanisterSignature "CanisterSignature";
 import Delegation "Delegation";
 import User "User";
-import Hex "Hex";
+import Hex "mo:hex";
 import Jwt "JWT";
 import PKCE "PKCE";
 import { JSON } "mo:serde";

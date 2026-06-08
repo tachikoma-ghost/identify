@@ -1,7 +1,7 @@
 import Char "mo:core/Char";
 import Text "mo:core/Text";
 import Blob "mo:core/Blob";
-import Hex "Hex";
+import Hex "mo:hex";
 
 module {
 

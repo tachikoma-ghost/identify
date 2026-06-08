@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "mopsTomlDepsHash": "2999a947a9125a4e16caa6fec6c9393d5ae4b4508714ae2ed45f6601abb78e45",
+  "mopsTomlDepsHash": "15b45dbdeed02bee865acb34a335fc2fa958acd81133ed384b2055ef1816367d",
   "deps": {
     "core": "2.5.0",
     "base": "0.16.0",
@@ -22,7 +22,7 @@
     "base-0.7.3": "https://github.com/dfinity/motoko-base#aafcdee0c8328087aeed506e64aa2ff4ed329b47",
     "array": "https://github.com/aviate-labs/array.mo#v0.2.1",
     "cbor": "4.1.0",
-    "hex": "1.0.2",
+    "hex": "1.0.3",
     "xtended-numbers": "2.3.0",
     "candid": "2.4.2",
     "bench": "2.0.1",
@@ -432,11 +432,11 @@
       "hash@1.0.0/README.md": "9a483b8ddc3db00d6863f94817d1bfb12829b6b339258f04e7505313435cbe9d",
       "hash@1.0.0/src/CRC32.mo": "fa47440ff98c9bc35190e0ad5aa3f33dc82788de17e207e318fd5adf852e0aa2"
     },
-    "hex@1.0.2": {
-      "hex@1.0.2/src/lib.mo": "d3bd0c32e8af37881adffdadda8e0ecc2de053bde59109bf6641f0459ea16c7b",
-      "hex@1.0.2/mops.toml": "62ee8282d4079a1eec58a77e3a9f3d981cb8f4d9aaff5c37bc345da68ec0f320",
-      "hex@1.0.2/README.md": "d32fb6e0bd0e60eccfca4f208270265aaa5a69f18e1fecf38634419e80ac1a73",
-      "hex@1.0.2/LICENSE": "8b50bfaf3fb817019715454a2888b5111e53ee6a33718b0dcd7d03715c184daf"
+    "hex@1.0.3": {
+      "hex@1.0.3/mops.toml": "2a556aad6f3129fca164052393e4e404e06ed18131f90c5d593ae86a34584fd1",
+      "hex@1.0.3/LICENSE": "8b50bfaf3fb817019715454a2888b5111e53ee6a33718b0dcd7d03715c184daf",
+      "hex@1.0.3/README.md": "d32fb6e0bd0e60eccfca4f208270265aaa5a69f18e1fecf38634419e80ac1a73",
+      "hex@1.0.3/src/lib.mo": "cfedc7f6246380069d3977ba027a3169bd507962e94f9c73631867cf3706af46"
     },
     "candid@2.4.2": {
       "candid@2.4.2/src/InternalTypes.mo": "e00fc2601aabc852f962c6e5637ecb185e7274189b437b0941d7d032c57c278d",
