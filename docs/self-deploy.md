@@ -7,6 +7,8 @@ There are three main ways to deploy and use the Identify canister.
 2.  **Build from source:** For full control, clone the repository, configure your providers in the source code, and deploy.
 3.  **Use as a Mops library:** The most flexible option. Integrate the Identify logic directly into your own backend canister.
 
+> **Note on tooling:** The project ships an `icp.yaml` for the modern [`icp` CLI](https://cli.internetcomputer.org) (DFINITY's successor to `dfx`). The `dfx` instructions below still work for the current source. After the source has been migrated to the new Motoko compiler (see the `moc-1.8-core-2.5` branch), `icp deploy -e mainnet` will be the canonical deploy command.
+
 ---
 
 ## Option 1: Deploy the Pre-built Release
@@ -19,11 +21,27 @@ Download the latest release zip file from the [Identify releases](https://github
 - `backend.wasm.gz` - The backend canister
 - `backend.did` - The backend interface definition
 - `frontend/` - The frontend assets
-- `dfx.json` - Configuration file for deployment
+- `icp.yaml` (recommended) or `dfx.json` (legacy) - project configuration
 
 ### 2. Deploy the Backend Canister
 
 Deploy the backend wasm to the IC. The principal you use for this command will be the initial controller.
+
+With `icp` (recommended):
+
+```bash
+# Import your identity (PEM file from your wallet or `dfx identity export`)
+icp identity import my-id --from-pem ./identity.pem
+
+# Edit icp.yaml's `production` environment or use --proxy for the wallet
+# canister. Then:
+icp canister create --network mainnet backend
+icp canister install --network mainnet backend \
+  --wasm backend.wasm.gz \
+  --args ""
+```
+
+With `dfx` (legacy):
 
 ```bash
 dfx canister create --ic backend
@@ -47,12 +65,18 @@ For example, if your backend canister ID is `abc12-34567-89xyz-pqrst-cai`:
 sed -i 's/fhzgg-waaaa-aaaah-aqzvq-cai/abc12-34567-89xyz-pqrst-cai/g' frontend/app.js
 ```
 
-### 4. Deploy with dfx
+### 4. Deploy the Frontend
 
-Deploy using dfx:
+With `icp` (recommended):
 
 ```bash
-dfx deploy --ic
+icp deploy -e mainnet frontend
+```
+
+With `dfx` (legacy):
+
+```bash
+dfx deploy --ic frontend
 ```
 
 ### 5. Configure Providers
@@ -105,7 +129,27 @@ git clone https://github.com/f0i/identify
 cd identify
 ```
 
-Delete `canister_ids.json`. When you deploy, dfx will create a new one for you with your canister IDs.
+Delete `canister_ids.json` (dfx) and `.icp/data/mappings/mainnet.ids.json` (icp). When you deploy, your tool will create new mapping files for you with the freshly created canister IDs.
+
+### 2. Install Build Dependencies
+
+For `icp` (recommended):
+
+```bash
+npm install -g @icp-sdk/icp-cli @icp-sdk/ic-wasm ic-mops
+mops install
+```
+
+For `dfx` (legacy):
+
+```bash
+# Install dfx (https://internetcomputer.org/docs/current/developer-docs/getting-started/install/)
+sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
+```
+
+### 3. Configure Providers (optional)
+
+Open `src/backend/main.mo` and add your provider configurations at the end of the actor class (before the closing `};`).
 
 ### 2. Configure Providers (optional)
 
@@ -141,9 +185,17 @@ Open `src/backend/main.mo` and add your provider configurations at the end of th
 // ...
 ```
 
-### 3. Deploy
+### 4. Deploy
 
 Deploy the canister to the IC.
+
+With `icp` (recommended):
+
+```bash
+icp deploy -e mainnet
+```
+
+With `dfx` (legacy):
 
 ```bash
 dfx deploy --ic

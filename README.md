@@ -68,7 +68,6 @@ https://btc-gift-cards.com
 This app shows some basic statistics about how many apps are connected and how many users signed in with Identify.
 
 # Development
-
 ## Contribution
 
 You are welcome to submit any issues you have.
@@ -78,6 +77,23 @@ For PRs, please contact me in advance.
 
 You can run all of the tests using the following commands:
 
+```
+npm run test
+npm run bench
+```
+
+## Build tooling
+
+The project uses the [`icp` CLI](https://cli.internetcomputer.org) (the modern
+DFINITY tool, successor to `dfx`). The project file is `icp.yaml`. A legacy
+`dfx.json` is also present for users on the older toolchain; both currently
+work for build, but `icp` is the forward-looking path.
+
+Required toolchain (moc 1.8.x, core 2.5.x):
+
+```bash
+npm install -g @icp-sdk/icp-cli @icp-sdk/ic-wasm ic-mops
+mops install   # installs moc + wasmtime for the project
 ```
 npm run test
 npm run bench

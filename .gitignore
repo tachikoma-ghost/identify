@@ -29,6 +29,10 @@ tsconfig.tsbuildinfo
 # mops and raw test data
 .mops
 
+# icp-cli cache (build artifacts). The data/mappings/ subdir holds
+# committed canister-ID mappings and must NOT be ignored.
+.icp/cache/
+
 # temporary test files
 /test/keys/20*
 

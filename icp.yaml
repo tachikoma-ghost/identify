@@ -1,0 +1,49 @@
+# Configuration for the `icp` CLI (https://cli.internetcomputer.org).
+# Replaces `dfx.json` for the identify project.
+#
+# This file is committed. The companion data files under `.icp/data/mappings/`
+# map environments to existing canister IDs and should also be committed.
+# Only `.icp/cache/` is gitignored.
+
+canisters:
+  - name: backend
+    recipe:
+      type: "@dfinity/motoko@v4.0.0"
+      configuration:
+        main: src/backend/main.mo
+        # mops manages the moc compiler; the recipe invokes `mops toolchain bin moc`.
+        # `candid` is omitted: moc generates `candid:service` metadata from the
+        # actor's public surface during build.
+        args: ""
+  - name: frontend
+    recipe:
+      type: "@dfinity/asset-canister@v2.2.1"
+      configuration:
+        # dfx's frontend (assets) type auto-detected package.json; icp-cli needs
+        # explicit build commands. Frontend assets land in out/frontend via the
+        # project's own build.js bundler.
+        dir: out/frontend
+        build:
+          - npm install
+          - npm run build
+
+networks:
+  - name: local
+    mode: managed
+    gateway:
+      bind: 127.0.0.1
+      port: 4943
+  - name: mainnet
+    mode: connected
+    url: https://icp-api.io
+
+environments:
+  - name: production
+    network: mainnet
+    canisters: [backend, frontend]
+  - name: staging
+    network: mainnet
+    canisters: [backend, frontend]
+  - name: local
+    network: local
+    canisters: [backend, frontend]
