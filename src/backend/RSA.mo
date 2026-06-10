@@ -1,10 +1,10 @@
-import Result "mo:base/Result";
-import Nat8 "mo:base/Nat8";
-import Array "mo:base/Array";
-import Blob "mo:base/Blob";
+import Result "mo:core/Result";
+import Nat8 "mo:core/Nat8";
+import Array "mo:core/Array";
+import Blob "mo:core/Blob";
+import Nat "mo:core/Nat";
+import Iter "mo:core/Iter";
 import Buffer "mo:base/Buffer";
-import Nat "mo:base/Nat";
-import Iter "mo:base/Iter";
 import Base64 "Base64";
 import { JSON } "mo:serde";
 import Text "mo:core/Text";
@@ -73,7 +73,7 @@ module {
     // Check padding
     assert (RS256Padding.size() == (256 - 32 : Nat));
     if (decBuf.size() == 256) {
-      for (i in Iter.range(2, 256 - 32 - 1)) {
+      for (i in Nat.range(2, 256 - 32 - 1)) {
         if (decBuf.get(i) != RS256Padding[i]) {
           return #err("invalid padding value at index " # Nat.toText(i) # ": " # Nat8.toText(decBuf.get(i)));
         };
@@ -81,12 +81,12 @@ module {
     } else if (decBuf.size() == 512) {
       if (decBuf.get(0) != 0) return #err("invalid padding value at index 0: " # Nat8.toText(decBuf.get(0)));
       if (decBuf.get(1) != 1) return #err("invalid padding value at index 1: " # Nat8.toText(decBuf.get(1)));
-      for (i in Iter.range(2, 256 + 2)) {
+      for (i in Nat.range(2, 256 + 2)) {
         if (decBuf.get(i) != 255) {
           return #err("invalid padding value at index " # Nat.toText(i) # ": " # Nat8.toText(decBuf.get(i + 256)));
         };
       };
-      for (i in Iter.range(2, 256 - 32 - 1)) {
+      for (i in Nat.range(2, 256 - 32 - 1)) {
         if (decBuf.get(i + 256) != RS256Padding[i]) {
           return #err("invalid padding value at index " # Nat.toText(i) # ": " # Nat8.toText(decBuf.get(i + 256)));
         };

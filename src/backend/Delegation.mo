@@ -1,9 +1,9 @@
 import ULEB128 "ULEB128";
-import Int "mo:base/Int";
-import Blob "mo:base/Blob";
-import Array "mo:base/Array";
-import Time "mo:base/Time";
-import Principal "mo:base/Principal";
+import Int "mo:core/Int";
+import Blob "mo:core/Blob";
+import Array "mo:core/Array";
+import Time "mo:core/Time";
+import Principal "mo:core/Principal";
 import Sha256 "mo:sha2/Sha256";
 module {
   public type Delegation = {
