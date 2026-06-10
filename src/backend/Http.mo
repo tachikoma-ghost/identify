@@ -1,19 +1,20 @@
-import Blob "mo:base/Blob";
-import Nat64 "mo:base/Nat64";
-import Text "mo:base/Text";
-import Debug "mo:base/Debug";
-import Error "mo:base/Error";
-import Runtime "mo:core/Runtime";
+import Blob "mo:core/Blob";
+import Text "mo:core/Text";
+import Debug "mo:core/Debug";
+import Error "mo:core/Error";
 import Option "mo:core/Option";
-import IC "ic:aaaaa-aa";
+import Runtime "mo:core/Runtime";
+import { ic } "mo:ic";
+import Call "mo:ic/Call";
+import IC "mo:ic/Types";
 import RSA "RSA";
 
 module {
   type Timestamp = Nat64;
 
-  public func transformKeys({ context; response } : TransformArgs) : IC.http_request_result {
+  public func transformKeys({ context; response } : TransformArgs) : IC.HttpRequestResult {
     ignore context;
-    let ?content = Text.decodeUtf8(response.body) else Debug.trap("Invalid response body");
+    let ?content = Text.decodeUtf8(response.body) else Runtime.trap("Invalid response body");
 
     let keys = switch (RSA.pubKeysFromJSON(content)) {
       case (#err err) Runtime.trap("Http transformBody failes: " # err);
@@ -32,63 +33,42 @@ module {
     };
   };
 
-  public func transform({ context; response } : TransformArgs) : IC.http_request_result {
+  public func transform({ context; response } : TransformArgs) : IC.HttpRequestResult {
     ignore context;
     return { response with headers = [] };
   };
 
   public type TransformArgs = {
     context : Blob;
-    response : IC.http_request_result;
+    response : IC.HttpRequestResult;
   };
-  public type TransformResult = IC.http_request_result;
+  public type TransformResult = IC.HttpRequestResult;
   public type TransformFn = shared query TransformArgs -> async TransformResult;
 
-  public type Request = IC.http_request_args;
+  public type Request = IC.HttpRequestArgs;
 
   public func getRequest(url : Text, headers : [Header], maxBytes : Nat64, transform : TransformFn, replicated : Bool) : async* {
     data : Text;
-    expectedCost : Nat;
   } {
-
-    let transform_context = {
-      function = transform;
-      context = Blob.fromArray([]);
-    };
-
     let http_request : Request = {
       url = url;
       max_response_bytes = ?maxBytes;
       headers;
       body = null;
       method = #get;
-      transform = ?transform_context;
+      transform = ?{ function = transform; context = Blob.fromArray([]) };
       is_replicated = ?replicated;
     };
 
-    let maxCost = 400_000 /* base cost */ + Nat64.toNat(maxBytes) * 100_000 /* cost per byte */ * 3 /* factor to ensure enough cycles */;
-
     try {
-      let http_response = await (with cycles = maxCost) IC.http_request(http_request);
-
-      let response_body : Blob = http_response.body;
-      let decoded_text : Text = switch (Text.decodeUtf8(response_body)) {
-        case (null) { "No value returned" };
-        case (?y) { y };
-      };
-
-      //6. RETURN RESPONSE OF THE BODY
-      return {
-        data = decoded_text;
-        expectedCost = maxCost;
-      };
-
+      let http_response = await Call.httpRequest(http_request);
+      return { data = decodeBody(http_response.body) };
     } catch (err) {
-      Debug.trap("http outcall error: " # Error.message(err));
+      Runtime.trap("http outcall error: " # Error.message(err));
     };
   };
 
-  public type Header = IC.http_header; // {name: Text; value: Text}
+  public type Header = IC.HttpHeader; // {name: Text; value: Text}
 
   /// Perform a post request
   /// WARNING!: The post request is not replicated, and therefore could be manipulated by the node provider!
@@ -96,41 +76,28 @@ module {
     data : Text;
     statusCode : Nat;
   } {
-
-    let transform_context = {
-      function = transform;
-      context = Blob.fromArray([]);
-    };
-
     let http_request : Request = {
       url = url;
       max_response_bytes = ?maxBytes;
       headers;
       body = Option.map(body, Text.encodeUtf8);
       method = #post;
-      transform = ?transform_context;
+      transform = ?{ function = transform; context = Blob.fromArray([]) };
       is_replicated = ?false;
     };
 
-    let maxCost = 400_000 /* base cost */ + Nat64.toNat(maxBytes) * 100_000 /* cost per byte */ * 3 /* factor to ensure enough cycles */;
-
     try {
-      let http_response = await (with cycles = maxCost) IC.http_request(http_request);
-
-      let response_body : Blob = http_response.body;
-      let decoded_text : Text = switch (Text.decodeUtf8(response_body)) {
-        case (null) { "No value returned" };
-        case (?y) { y };
-      };
-
-      //6. RETURN RESPONSE OF THE BODY
-      return {
-        data = decoded_text;
-        statusCode = http_response.status;
-      };
-
+      let http_response = await Call.httpRequest(http_request);
+      return { data = decodeBody(http_response.body); statusCode = http_response.status };
     } catch (err) {
-      Debug.trap("http outcall error: " # Error.message(err));
+      Runtime.trap("http outcall error: " # Error.message(err));
+    };
+  };
+
+  func decodeBody(body : Blob) : Text {
+    switch (Text.decodeUtf8(body)) {
+      case (null) "No value returned";
+      case (?y) y;
     };
   };
 

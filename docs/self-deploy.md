@@ -7,7 +7,7 @@ There are three main ways to deploy and use the Identify canister.
 2.  **Build from source:** For full control, clone the repository, configure your providers in the source code, and deploy.
 3.  **Use as a Mops library:** The most flexible option. Integrate the Identify logic directly into your own backend canister.
 
-> **Note on tooling:** The project ships an `icp.yaml` for the modern [`icp` CLI](https://cli.internetcomputer.org) (DFINITY's successor to `dfx`). The `dfx` instructions below still work for the current source. After the source has been migrated to the new Motoko compiler (see the `moc-1.8-core-2.5` branch), `icp deploy -e mainnet` will be the canonical deploy command.
+> **Note on tooling:** The project ships an `icp.yaml` for the modern [`icp` CLI](https://cli.internetcomputer.org) (DFINITY's successor to `dfx`). The `dfx` instructions below still work for the current source. The source has been migrated to `moc 1.8.x` + `core 2.5.0` and uses the `mo:ic` mops package, so `icp deploy -e mainnet` is now the canonical deploy command.
 
 ---
 

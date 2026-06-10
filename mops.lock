@@ -1,9 +1,10 @@
 {
   "version": 3,
-  "mopsTomlDepsHash": "15b45dbdeed02bee865acb34a335fc2fa958acd81133ed384b2055ef1816367d",
+  "mopsTomlDepsHash": "9a77ad829b5de71ec7435a36f84ecaa16ea1aa89772210022f6928435542218b",
   "deps": {
     "core": "2.5.0",
     "base": "0.16.0",
+    "ic": "4.0.0",
     "serde": "3.5.0",
     "base@0.16": "0.16.0",
     "itertools@0.2.2": "0.2.2",
@@ -18,9 +19,6 @@
     "byte-utils@0.2": "0.2.0",
     "core@2.4": "2.4.0",
     "sha2": "0.2.1",
-    "hash": "1.0.0",
-    "base-0.7.3": "https://github.com/dfinity/motoko-base#aafcdee0c8328087aeed506e64aa2ff4ed329b47",
-    "array": "https://github.com/aviate-labs/array.mo#v0.2.1",
     "cbor": "4.1.0",
     "hex": "1.0.3",
     "xtended-numbers": "2.3.0",
@@ -143,6 +141,14 @@
       "base@0.16.0/src/TrieMap.mo": "f09aab78476ffd158f8ab789e0692ad61aa9b1f4ac6ff3af30cdac5f5c30a7e4",
       "base@0.16.0/src/Trie.mo": "3ca67f2527afaf5e663bd7b227384d0b20d0ea0cfc7c532e5d95a625c0d0d6bb",
       "base@0.16.0/src/TrieSet.mo": "9c8c1821582b344de6f3910f417527ec0b565876eb2d9da09455af05117ed45a"
+    },
+    "ic@4.0.0": {
+      "ic@4.0.0/README.md": "7686aefce0c535d18ee2768e98660575563daa53b00d2c1041170032c232784c",
+      "ic@4.0.0/mops.toml": "7a6bb3d74b1ec5539b9bb88e0a0a0ba09e8c46e00b38cb5feda009d6b80723df",
+      "ic@4.0.0/src/Call.mo": "b4a3572e5617d0b1eb696450344b65e99504f844794e7ddf1cff664fcfeb2994",
+      "ic@4.0.0/src/lib.mo": "9d9ec84a85eb25d191c1cae99cb841d9b6e0cf0f9bc27c3f3805ac9673d7bef1",
+      "ic@4.0.0/LICENSE": "ec415b57f8143746b567c94bfad243f5342f3edf110c94641a1a60e02722db55",
+      "ic@4.0.0/src/Types.mo": "373c3a18e072058aecaaec99385a08f95746c7e86cc9694f9f23caa982c2ad6c"
     },
     "serde@3.5.0": {
       "serde@3.5.0/LICENSE": "722f3f4279baf4ab992c14fdbb619e088f85af40b24881a8851de77e4ab084f6",
@@ -425,12 +431,6 @@
       "sha2@0.2.1/src/sha256/state/process/blocks/iter.mo": "4001f759362c8096d0b5e56fed6594c9f6736c2e2790f6c3f047c873660ebe5f",
       "sha2@0.2.1/src/sha256/state/process/blocks/array.mo": "af83641e36a46959895844b84872536429ab70a915bf9b8a9e3a4a6ddfeb5f89",
       "sha2@0.2.1/src/sha256/state/process/blocks/blob.mo": "d834ead0f15ee63feacf90bcc600984dd838b52ff8aa91d522472485d916977c"
-    },
-    "hash@1.0.0": {
-      "hash@1.0.0/mops.toml": "391a46980c1eb7f1560ab962e84a13ebc6bb883d5c3ffa5eb9cdeeb4efd6a56c",
-      "hash@1.0.0/LICENSE": "32c512d604ec0f4c2ed1173d80c8d8a702e21581c20ceca26d0152eca45fd501",
-      "hash@1.0.0/README.md": "9a483b8ddc3db00d6863f94817d1bfb12829b6b339258f04e7505313435cbe9d",
-      "hash@1.0.0/src/CRC32.mo": "fa47440ff98c9bc35190e0ad5aa3f33dc82788de17e207e318fd5adf852e0aa2"
     },
     "hex@1.0.3": {
       "hex@1.0.3/mops.toml": "2a556aad6f3129fca164052393e4e404e06ed18131f90c5d593ae86a34584fd1",
