@@ -17,8 +17,9 @@ if (source.includes('"_blank"')) {
   process.exit(0);
 }
 
-// Regex to match the whole window.open(...) call
-const regex = /window\.open\(e, [^)]*\)/g;
+// Regex to match the whole window.open(...) call.
+// The comma spacing varies between minifier builds, so whitespace is optional.
+const regex = /window\.open\(e,\s*[^)]*\)/g;
 
 // Find all matches
 const matches = [...source.matchAll(regex)];
