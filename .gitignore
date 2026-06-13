@@ -11,7 +11,10 @@
 .dfx/
 
 # generated files
-**/declarations/
+# NOTE: src/declarations/backend/ is committed and regenerated via
+# `npm run gen:declarations` (moc --idl + didc) now that dfx is gone. The
+# agent-js subtree keeps its own generated declarations ignored.
+src/frontend/agent-js/**/declarations/
 
 # rust
 target/

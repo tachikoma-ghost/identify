@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "build": "node build.js",
+    "gen:declarations": "bash scripts/gen-declarations.sh",
     "test": "npm run test:backend",
     "test:backend": "./test/run.sh",
     "test:backend:fast": "./test/run.sh --fast",
