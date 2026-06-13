@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.2.0 2026-06-13
+
+### Build & Tooling
+*   **Toolchain Upgrade:** Migrated to `moc 1.8.2` and `core 2.5.0`, and bumped all mops/npm dependencies to their latest compatible versions.
+*   **dfx → icp-cli:** Replaced `dfx.json` with `icp.yaml` for the [`icp` CLI](https://cli.internetcomputer.org). Removed `dfx.json`, `release.dfx.json`, and the dfx-format `canister_ids.json` (canister IDs now live in `.icp/data/mappings/`). `icp deploy -e mainnet` is the canonical deploy command; `release.sh` is icp-only.
+*   **dfx-free Declarations:** Frontend candid declarations (`src/declarations/backend/`) are now generated without dfx via `npm run gen:declarations` (`moc --idl` + the official `didc`), and are committed so the frontend build is self-contained. See `scripts/gen-declarations.sh`.
+*   **Vendored Hex Removed:** Dropped the in-tree Hex module in favour of the upstream `hex@1.0.3` mops package.
+
+### Core System & Performance
+*   **`mo:base` → `mo:core` Migration:** Migrated `Delegation.mo` and `RSA.mo` to `mo:core` (`Iter.range(...)` → `Nat.range(...)`). `Buffer` remains on `mo:base` as `mo:core` has no equivalent.
+*   **HTTP Outcalls Refactor:** Rewrote `Http.mo` to use the `mo:ic` package (`import { ic } "mo:ic"` + `Call.httpRequest`) with PascalCase Candid types, replacing the old `ic:aaaaa-aa` actor-URL import that `moc 1.8.x` rejects.
+
+### User Interface & Experience
+*   **Auth0 Patch Fix:** Made the `auth0-spa-js` popup→tab patch tolerant of minifier comma-spacing, so `postinstall`/frontend build no longer aborts on the 2.2.0 bundle.
+
+### Documentation
+*   **icp-Only Deploy Docs:** Updated `docs/self-deploy.md` and `README.md` to drop the legacy `dfx` instructions and document the icp-cli build/deploy and declaration-generation flow.
+
 ## 0.1.0 2025-10-15
 
 ### Authentication & Identity

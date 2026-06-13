@@ -85,9 +85,9 @@ npm run bench
 ## Build tooling
 
 The project uses the [`icp` CLI](https://cli.internetcomputer.org) (the modern
-DFINITY tool, successor to `dfx`). The project file is `icp.yaml`. A legacy
-`dfx.json` is also present for users on the older toolchain; both currently
-work for build, but `icp` is the forward-looking path.
+DFINITY tool, successor to `dfx`). The project file is `icp.yaml`. Frontend
+candid declarations are generated dfx-free via `npm run gen:declarations`
+(`moc --idl` + `didc`); see `scripts/gen-declarations.sh`.
 
 Required toolchain (moc 1.8.x, core 2.5.x):
 

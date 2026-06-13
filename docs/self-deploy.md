@@ -7,7 +7,7 @@ There are three main ways to deploy and use the Identify canister.
 2.  **Build from source:** For full control, clone the repository, configure your providers in the source code, and deploy.
 3.  **Use as a Mops library:** The most flexible option. Integrate the Identify logic directly into your own backend canister.
 
-> **Note on tooling:** The project ships an `icp.yaml` for the modern [`icp` CLI](https://cli.internetcomputer.org) (DFINITY's successor to `dfx`). The `dfx` instructions below still work for the current source. The source has been migrated to `moc 1.8.x` + `core 2.5.0` and uses the `mo:ic` mops package, so `icp deploy -e mainnet` is now the canonical deploy command.
+> **Note on tooling:** The project uses the [`icp` CLI](https://cli.internetcomputer.org) (DFINITY's successor to `dfx`); the project config is `icp.yaml`. The source has been migrated to `moc 1.8.x` + `core 2.5.0` and uses the `mo:ic` mops package, so `icp deploy -e mainnet` is the canonical deploy command. `dfx` is no longer used.
 
 ---
 
@@ -21,16 +21,14 @@ Download the latest release zip file from the [Identify releases](https://github
 - `backend.wasm.gz` - The backend canister
 - `backend.did` - The backend interface definition
 - `frontend/` - The frontend assets
-- `icp.yaml` (recommended) or `dfx.json` (legacy) - project configuration
+- `icp.yaml` - project configuration
 
 ### 2. Deploy the Backend Canister
 
 Deploy the backend wasm to the IC. The principal you use for this command will be the initial controller.
 
-With `icp` (recommended):
-
 ```bash
-# Import your identity (PEM file from your wallet or `dfx identity export`)
+# Import your identity (PEM file exported from your wallet)
 icp identity import my-id --from-pem ./identity.pem
 
 # Edit icp.yaml's `production` environment or use --proxy for the wallet
@@ -39,13 +37,6 @@ icp canister create --network mainnet backend
 icp canister install --network mainnet backend \
   --wasm backend.wasm.gz \
   --args ""
-```
-
-With `dfx` (legacy):
-
-```bash
-dfx canister create --ic backend
-dfx canister install --ic backend --wasm backend.wasm.gz
 ```
 
 Note the backend canister ID from the output (e.g., `xxxxx-xxxxx-xxxxx-xxxxx-cai`).
@@ -67,26 +58,18 @@ sed -i 's/fhzgg-waaaa-aaaah-aqzvq-cai/abc12-34567-89xyz-pqrst-cai/g' frontend/ap
 
 ### 4. Deploy the Frontend
 
-With `icp` (recommended):
-
 ```bash
 icp deploy -e mainnet frontend
-```
-
-With `dfx` (legacy):
-
-```bash
-dfx deploy --ic frontend
 ```
 
 ### 5. Configure Providers
 
 After deployment, you need to add your desired OAuth providers. You can do this by calling the `addProvider` function on the canister. This must be done with the same principal that deployed the canister.
 
-Here is an example of how to add a generic OAuth 2.0 provider using `dfx`.
+Here is an example of how to add a generic OAuth 2.0 provider.
 
 ```bash
-dfx canister call --ic backend addProvider '(
+icp canister call -e production backend addProvider '(
   "MyOIDCProvider",
   variant {
     jwt = record {
@@ -129,29 +112,16 @@ git clone https://github.com/f0i/identify
 cd identify
 ```
 
-Delete `canister_ids.json` (dfx) and `.icp/data/mappings/mainnet.ids.json` (icp). When you deploy, your tool will create new mapping files for you with the freshly created canister IDs.
+Delete `.icp/data/mappings/mainnet.ids.json`. When you deploy, `icp` will create a new mapping file with your freshly created canister IDs.
 
 ### 2. Install Build Dependencies
-
-For `icp` (recommended):
 
 ```bash
 npm install -g @icp-sdk/icp-cli @icp-sdk/ic-wasm ic-mops
 mops install
 ```
 
-For `dfx` (legacy):
-
-```bash
-# Install dfx (https://internetcomputer.org/docs/current/developer-docs/getting-started/install/)
-sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
-```
-
 ### 3. Configure Providers (optional)
-
-Open `src/backend/main.mo` and add your provider configurations at the end of the actor class (before the closing `};`).
-
-### 2. Configure Providers (optional)
 
 Open `src/backend/main.mo` and add your provider configurations at the end of the actor class (before the closing `};`).
 
@@ -189,16 +159,8 @@ Open `src/backend/main.mo` and add your provider configurations at the end of th
 
 Deploy the canister to the IC.
 
-With `icp` (recommended):
-
 ```bash
 icp deploy -e mainnet
-```
-
-With `dfx` (legacy):
-
-```bash
-dfx deploy --ic
 ```
 
 ---
