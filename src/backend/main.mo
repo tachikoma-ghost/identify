@@ -227,7 +227,7 @@ shared ({ caller = initializer }) persistent actor class Main() = this {
   /// Running this periodically (e.g. every day) can increase the sign in speed for some providers.
   /// Required keys will still be loaded at the time of login, if the requested key ID is not present.
   private func fetchAllKeys() : async () {
-    // Key updates are logged using Debug.print. You can check by calling `dfx canister logs --ic backend`
+    // Key updates are logged using Debug.print. You can check by calling `icp canister logs -e production backend`
     ignore await* Identify.prefetchKeys(identify, transformKeys);
   };
 

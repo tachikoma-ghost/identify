@@ -13,7 +13,7 @@ set -eu -o pipefail
 # See docs/configure-provider.md for detailed configuration guide
 
 echo \
- dfx canister call --ic backend addProvider \
+ icp canister call -e production backend addProvider \
 '(
   "Google",
   variant {
@@ -34,7 +34,7 @@ echo \
 )'
 
 echo \
- dfx canister call --ic backend addProvider \
+ icp canister call -e production backend addProvider \
 '(
   "Auth0",
   variant {
@@ -55,7 +55,7 @@ echo \
 )'
 
 echo \
-dfx canister call --ic backend addProvider \
+icp canister call -e production backend addProvider \
 '(
   "Zitadel",
   variant {
@@ -77,7 +77,7 @@ dfx canister call --ic backend addProvider \
 
 
 echo \
-dfx canister call --ic backend addProvider \
+icp canister call -e production backend addProvider \
 '(
   "Github",
   variant {
@@ -95,7 +95,7 @@ dfx canister call --ic backend addProvider \
 
 
 echo \
-dfx canister call --ic backend addProvider \
+icp canister call -e production backend addProvider \
 '(
   "X",
   variant {
@@ -112,7 +112,7 @@ dfx canister call --ic backend addProvider \
 )'
 
 echo \
-dfx canister call --ic backend addProvider \
+icp canister call -e production backend addProvider \
 '(
   "LinkedIn",
   variant {
@@ -133,7 +133,7 @@ dfx canister call --ic backend addProvider \
 )'
 
 echo \
-dfx canister call --ic backend addProvider \
+icp canister call -e production backend addProvider \
 '(
   "Discord",
   variant {
@@ -150,7 +150,7 @@ dfx canister call --ic backend addProvider \
 )'
 
 echo \
-dfx canister call --ic backend addProvider \
+icp canister call -e production backend addProvider \
 '(
   "Discord",
   variant {

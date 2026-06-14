@@ -11,7 +11,7 @@ Identify supports adding custom OAuth 2.0 and OpenID Connect providers using eit
 For OIDC providers that issue JWT tokens (ID tokens):
 
 ```bash
-dfx canister call --ic backend addProvider '(
+icp canister call -e production backend addProvider '(
   "ProviderName",
   variant {
     jwt = record {
@@ -43,7 +43,7 @@ dfx canister call --ic backend addProvider '(
 For OAuth providers without JWT support:
 
 ```bash
-dfx canister call --ic backend addProvider '(
+icp canister call -e production backend addProvider '(
   "ProviderName",
   variant {
     pkce = record {

@@ -16,7 +16,7 @@ In [LinkedIn Developers](https://www.linkedin.com/developers/apps):
 ## 2. Configure the Provider
 
 ```bash
-dfx canister call --ic backend addProvider '(
+icp canister call -e production backend addProvider '(
   "LinkedIn",
   variant {
     jwt = record {

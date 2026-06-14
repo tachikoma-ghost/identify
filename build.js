@@ -51,7 +51,7 @@ esbuild
         CANISTER_ID_BACKEND: process.env.CANISTER_ID_BACKEND,
         DFX_NETWORK: process.env.DFX_NETWORK,
         BUILD_TIME: new Date().toISOString().replace("T", " ").substring(0, 19),
-      }), // pass in dfx environment variables
+      }), // inject canister id + network at build time (DFX_NETWORK name kept for frontend compat)
       global: "window",
     },
   })

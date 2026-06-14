@@ -17,7 +17,7 @@ In [X Developer Portal](https://developer.x.com/en/portal/dashboard):
 ## 2. Configure the Provider
 
 ```bash
-dfx canister call --ic backend addProvider '(
+icp canister call -e production backend addProvider '(
   "X",
   variant {
     pkce = record {

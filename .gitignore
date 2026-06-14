@@ -7,9 +7,6 @@
 .DS_Store
 **/.DS_Store
 
-# dfx temporary files
-.dfx/
-
 # generated files
 # NOTE: src/declarations/backend/ is committed and regenerated via
 # `npm run gen:declarations` (moc --idl + didc) now that dfx is gone. The

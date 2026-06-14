@@ -16,7 +16,7 @@ In [GitHub Developer Settings](https://github.com/settings/developers):
 ## 2. Configure the Provider
 
 ```bash
-dfx canister call --ic backend addProvider '(
+icp canister call -e production backend addProvider '(
   "GitHub",
   variant {
     pkce = record {

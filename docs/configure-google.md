@@ -18,7 +18,7 @@ In the [Google Cloud Console](https://console.cloud.google.com/):
 Add the Google provider to your deployed Identify canister using the `addProvider` function:
 
 ```bash
-dfx canister call --ic backend addProvider '(
+icp canister call -e production backend addProvider '(
   "Google",
   variant {
     jwt = record {
