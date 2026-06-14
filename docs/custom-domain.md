@@ -14,7 +14,7 @@ Setting up a custom domain requires:
 
 ### 1. Configure DNS Records
 
-Get your canister ID from the icp deployment mapping `.icp/data/mappings/mainnet.ids.json` (the `backend` entry).
+Get your **frontend** canister ID from the icp deployment mapping `.icp/data/mappings/mainnet.ids.json` (the `frontend` entry) — the custom domain is served by the asset (frontend) canister, so the records below point at it, not the backend.
 
 Add these DNS records (replace `login.your-domain.com` and `abc123-cai` with your values):
 
